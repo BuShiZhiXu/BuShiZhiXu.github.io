@@ -6,17 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>不时之需 - 微信生活服务信息平台</title>
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<style type="text/css">
-		body {font-family:"Microsoft YaHei";margin:15px auto;}
-		#logo {
-			display: block;
-			margin: 15px auto 0 auto;
-			width: 250px;
-			height: 70px;
-			background: url(img/logo.png);
-			text-indent: -1000px;
-		}
-	</style>
+	<link rel="stylesheet" href="style/main.css">
 	<!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -47,13 +37,13 @@
 						</div>
 					</div>
 		<form class="form-horizontal" role="form" style="margin-top:25px">
-			<div class="form-group">
+			<div class="form-group" id="group1">
 				<label for="title" class="col-sm-2 control-label">需求标题</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" data-toggle="tooltip" id="title" placeholder="请简要描述您的需求">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="group2">
 				<label for="content" class="col-sm-2 control-label">需求内容</label>
 				<div class="col-sm-10">
 					<textarea class="form-control" rows="8" data-toggle="tooltip" id="content" placeholder="请在这里详细描述您的需求"></textarea>
@@ -99,11 +89,13 @@
 				if(resultCode == 301){
 					$('#title').tooltip({title:'标题字数太少...'});
 					$('#title').focus();
+					$('#group1').addClass("has-error");
 					return;
 				}
 				if(resultCode == 302){
 					$('#content').tooltip({title:'需求内容字数太少...'});
 					$('#content').focus();
+					$('#group2').addClass("has-error");
 					return;
 				}
 
@@ -147,7 +139,7 @@ function send(){
 		content: content,
 		time: dd(),
 		title: title,
-		user: "系统测试",
+		user: "test",
 		views: 0
 	}).then(function(newRef){
        // newRef 的地址类似下面： 
@@ -167,7 +159,7 @@ function send(){
 					  return i;
 					}
 					var d= new Date();
-					return(d.getFullYear()+"年"+(d.getMonth()+1) + "月"+d.getDate()+"日 "+checkTime(d.getHours())+":"+checkTime(d.getMinutes())+":"+checkTime(d.getSeconds()));
+					return(d.getFullYear()+"/"+(d.getMonth()+1) + "/"+d.getDate()+" "+checkTime(d.getHours())+":"+checkTime(d.getMinutes())+":"+checkTime(d.getSeconds()));
 				}
         </script>
 

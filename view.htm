@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>不时之需 - 微信生活服务信息平台</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+	<!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="container">
+        <h4>不时之需文章标题显示测试</h4>
+        2016-09-29 <a href="lintex">lintex</a>
+        <div>红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。</div>
+		<hr>
+		<a href="http://xu.ixxj.com" id="logo">不时之需</a>
+	</div>
+	<!-- /.container -->
+
+
+	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdn.wilddog.com/sdk/js/2.1.1/wilddog.js"></script>
+	
+        <script type="text/javascript">
+ 	var id = getUrlParam('id');
+
+	var ref = new Wilddog("https://lintex.wilddogio.com/blog2/posts/" + id);
+	ref.once("value", function(datasnapshot,error) {
+	    if (error == null) {
+	    	var d = datasnapshot.val();
+			ref.child('views').set(parseInt(d.views)+1);
+	    	$(".title").html("<a href=\"http://yangxiaoxi.com/blog/article.htm?id="+id+"\">"+d.title+"</a>");
+	    	$(".entry").html(d.content);
+	    	$(".postdata").html("发表于"+d.post_date+"，共被点击"+d.views+"次，共有<a href=\"http://\"><span id=\"cc\">"+d.comments+"</span>个评论</a>。<br/>固定链接：http://yangxiaoxi.com/blog/article.htm?id="+id+"<br />关键词：【关键词】</div>");
+			$("title").text(d.title + " - 无辜的微笑");
+			console.log(id);
+			ref = new Wilddog("https://lintex.wilddogio.com/blog2/comments/");
+			ref.orderByChild("postID")
+			.equalTo(id)
+			//.limitToFirst(10)
+			.on("child_added", function(snapshot) {
+				$("#comments").prepend("<li><b>" + snapshot.val().commName + "</b>：" + snapshot.val().commContent +"<br><i>" + snapshot.val().commDate +"</i></li>");
+			});
+	    }else{
+	    	alert(error.code);
+	    }
+	});
+
+function gettime(createtime){
+  var now=Date.parse(new Date())/1000;
+  createtime = Date.parse(createtime)/1000;
+  var limit=now-createtime;
+  var content="";
+  if(limit<60){
+    content="刚刚";
+  }else if(limit>=60 && limit<3600){
+    content=Math.floor(limit/60)+"分钟前";
+  }else if(limit>=3600 && limit<86400){
+    content=Math.floor(limit/3600)+"小时前";
+  }else if(limit>=86400 && limit<2592000){
+    content=Math.floor(limit/86400)+"天前";
+  }else if(limit>=2592000 && limit<31104000){
+    content=Math.floor(limit/2592000)+"个月前";
+  }else{
+    content="很久前";
+  }
+  return content;
+}
+
+
+
+        </script>
+
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9197463" charset="UTF-8"></script>
+	<div style="display:none;"><script src="https://s4.cnzz.com/z_stat.php?id=10921&web_id=10921" language="JavaScript"></script></div>
+</body>
+
+</html>
