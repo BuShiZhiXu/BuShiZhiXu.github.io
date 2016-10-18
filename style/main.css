@@ -4,7 +4,7 @@ body {font-family:"Microsoft YaHei";margin:15px auto;}
     margin: 15px auto 0 auto;
     width: 160px;
     height: 40px;
-    background: url(img/logo.png);
+    background: url(../img/logo.png);
     text-indent: -1000px;
 }
 .marginTop15px {margin-top:15px;}
