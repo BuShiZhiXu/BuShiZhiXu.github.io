@@ -40,27 +40,47 @@
                 <a type="button" class="btn btn-default" href="connect.htm">商户接入</a>
             </div>
         </div>
-
+					<div class="tooltip top" role="tooltip" id="tooltip1">
+						<div class="tooltip-arrow"></div>
+						<div class="tooltip-inner" id="tipMessage">
+							sdagsfdahdfgshgfds
+						</div>
+					</div>
 		<form class="form-horizontal" role="form" style="margin-top:25px">
 			<div class="form-group">
 				<label for="title" class="col-sm-2 control-label">需求标题</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="title" placeholder="请简要描述您的需求">
+					<input type="text" class="form-control" data-toggle="tooltip" id="title" placeholder="请简要描述您的需求">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="content" class="col-sm-2 control-label">需求内容</label>
 				<div class="col-sm-10">
-					<textarea class="form-control" rows="8" id="content" placeholder="请在这里详细描述您的需求"></textarea>
+					<textarea class="form-control" rows="8" data-toggle="tooltip" id="content" placeholder="请在这里详细描述您的需求"></textarea>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="button" id="send" class="btn btn-primary" style="width:40%;">发  布</button>
+					<button type="button" id="send" style="width:40%;" data-loading-text="发布中..." class="btn btn-primary" autocomplete="off">发  布</button>
 				</div>
 			</div>
 		</form>
+
+  <div id="msgbox" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="msgboxTitle">Small modal</h4>
+        </div>
+        <div class="modal-body" id="msgboxContent">
+          ...
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 		<hr>
 		<a href="http://xu.ixxj.com" id="logo">不时之需</a>
@@ -71,33 +91,74 @@
 	<script src="https://cdn.wilddog.com/sdk/js/2.1.1/wilddog.js"></script>
 	
         <script type="text/javascript">
-        	$(document).ready(function(){
-				$("#send").click(function(){ 
-					var title = $.trim($("#title").val());
-					var content = $.trim($("#content").val());
-					//content =HtmlUtil.htmlEncodeByRegExp(content);
-					
-					console.log("title:" + title + "\ncontent:" + content+ "\npost_date:" + dd());
 
-					var config = {
-						syncURL: "https://bszx.wilddogio.com/posts" //输入节点 URL
-					};
-					wilddog.initializeApp(config);
-					var ref = wilddog.sync().ref();
+			$('#send').on('click', function () {
+				
+				var resultCode = send();
+				console.log("resultCode:" + resultCode);
+				if(resultCode == 301){
+					$('#title').tooltip({title:'标题字数太少...'});
+					$('#title').focus();
+					return;
+				}
+				if(resultCode == 302){
+					$('#content').tooltip({title:'需求内容字数太少...'});
+					$('#content').focus();
+					return;
+				}
 
-					ref.push({
-						comments: 0,
-						content: content,
-						time: dd(),
-						title: title,
-						user: "系统测试",
-						views: 0
-					});
-
+				if(resultCode == 200){
+					$('#msgboxTitle').text("发布成功！");
+					$('#msgboxContent').text("感谢你对“不时之需”的信任！");
+					$("#title").val("");
+					$("#content").val("");
+				}else{
+					$('#msgboxTitle').text("发布失败！");
+					$('#msgboxContent').text(resultCode);
+				}
+				var $btn = $(this).button('loading'); //发布按钮处于不可用状态
+				$('#msgbox').modal('show'); //弹出提示框
+				//提示框关闭后执行下面操作
+				$('#msgbox').on('hidden.bs.modal', function (e) {
+					$btn.button('reset');
 				});
+				
 			});
 
+function send(){
+	var title = $.trim($("#title").val());
+	var content = $.trim($("#content").val());
+	if(title=="" || title.length < 5){
+		return 301;
+	}
+	if(content=="" || content.length < 15){
+		return 302;
+	}
 
+	//content =HtmlUtil.htmlEncodeByRegExp(content);
+	console.log("title:" + title + "\ncontent:" + content+ "\npost_date:" + dd());
+
+	var config = {syncURL: "https://bszx.wilddogio.com/posts"};
+	wilddog.initializeApp(config);
+	var ref = wilddog.sync().ref();
+
+	ref.push({
+		comments: 0,
+		content: content,
+		time: dd(),
+		title: title,
+		user: "系统测试",
+		views: 0
+	}).then(function(newRef){
+       // newRef 的地址类似下面： 
+       // https://<appId>.wilddogio.com/city/-JmRhjbYk73IFRZ7
+       //console.info(newRef.toString());
+    }).catch(function(err){
+       console.info('send failed', err.code, err);
+	   return err;
+    });
+	return 200;
+}
 
 				function dd(){
 					function checkTime(i){
