@@ -15,9 +15,9 @@
 
 <body>
 	<div class="container">
-        <h4>不时之需文章标题显示测试</h4>
-        2016-09-29 <a href="lintex">lintex</a>
-        <div class="marginTop15px">红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。红米Pro搭载十核MTK年度旗舰处理器Helio X25，主频最高可达2.5GHz。三丛十核省电技术，功耗降低30%。高性能十核处理器，世界快得就像一阵风。</div>
+		<div id="content">
+
+		</div>
 		<hr>
 		<a href="http://xu.ixxj.com" id="logo">不时之需</a>
 	</div>
@@ -26,11 +26,25 @@
 
 	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://cdn.wilddog.com/sdk/js/2.1.1/wilddog.js"></script>
-	
-        <script type="text/javascript">
- 	var id = getUrlParam('id');
+	<script src="js/base.js"></script>
 
-	var ref = new Wilddog("https://lintex.wilddogio.com/blog2/posts/" + id);
+    <script type="text/javascript">
+ 	var id = getUrlParam('id');
+	console.log("id: " + id);
+
+	wilddog.initializeApp({syncURL: "https://bszx.wilddogio.com/posts/"+ id});
+	var ref = wilddog.sync().ref();
+
+	ref.on('value', function(snapshot, error) {
+	if (error == null) {
+		var p = snapshot.val();
+		$("#content").html("<h4>"+p.title+"</h4>"+getTime(p.time)+" <a href=\"\">"+p.user+"</a><div class=\"marginTop15px\">"+p.content+"</div>");
+	} else {
+		console.log(error);
+	}
+	});
+
+/*	var ref = new Wilddog("https://bszx.wilddogio.com/posts/" + id);
 	ref.once("value", function(datasnapshot,error) {
 	    if (error == null) {
 	    	var d = datasnapshot.val();
@@ -51,10 +65,10 @@
 	    	alert(error.code);
 	    }
 	});
+*/
 
+    </script>
 
-        </script>
-    <script src="js/base.js"></script>
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9197463" charset="UTF-8"></script>
 	<div style="display:none;"><script src="https://s4.cnzz.com/z_stat.php?id=10921&web_id=10921" language="JavaScript"></script></div>
