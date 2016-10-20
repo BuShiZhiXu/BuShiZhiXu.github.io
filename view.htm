@@ -38,7 +38,7 @@
 	ref.on('value', function(snapshot, error) {
 	if (error == null) {
 		var p = snapshot.val();
-		$("#content").html("<h4>"+p.title+"</h4>"+getTime(p.time)+" <a href=\"\">"+p.user+"</a><div class=\"marginTop15px\">"+p.content+"</div>");
+		$("#content").html("<div><h4>"+p.title+"</h4>"+getTime(p.time)+" <a href=\"\">"+p.user+"</a></div><div class=\"marginTop15px\">"+p.content+"</div>");
 	} else {
 		console.log(error);
 	}

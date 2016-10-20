@@ -34,14 +34,14 @@
 		
 		<div class="panel panel-info">
 			<div class="panel-heading">最新需求</div>
-			<table class="table table-striped" id="tableList">
-			</table>
+			<div class="list-group" id="xqList">
+			</div>
 		</div>
 		
 		<nav>
 			<ul class="pager">
-				<li class="previous disabled"><a href="#">&lt;&lt; 上一页</a></li>
-				<li class="next"><a href="#">下一页 &gt;&gt;</a></li>
+				<li class="previous disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span> 上一页</a></li>
+				<li class="next"><a href="#">下一页 <span class="glyphicon glyphicon-chevron-right"></span></a></li>
 			</ul>
 		</nav>
 
@@ -65,8 +65,8 @@
 	ref.orderByKey().on("value", function(snapshot) {
   snapshot.forEach(function(data) {
 
-$("#tableList").prepend("<tr><td><a href=\"view.htm?id="+data.key()+"\">"+data.val().title+"</a></td><td>"+data.val().user+"</td><td>"+getTime(data.val().time)+"</td></tr>");
-
+//$("#tableList").prepend("<tr><td><a href=\"view.htm?id="+data.key()+"\">"+data.val().title+"</a></td><td>"+data.val().user+"</td><td>"+getTime(data.val().time)+"</td></tr>");
+$("#xqList").prepend("<a href=\"view.htm?id="+data.key()+"\" class=\"list-group-item\"><span class=\"badge\">"+data.val().comments+"</span>"+data.val().title+" - "+data.val().user+"</a>");
     //console.log("The " + data.key() + " student's score is " + data.val());
   });
 });
